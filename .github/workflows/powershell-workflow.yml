@@ -3,16 +3,19 @@ name: reusable_workflow_test
 on:
   workflow_call:
     inputs:
-      config-path:
+      module_name:
         required: true
         type: string
-    secrets:
-      token:
-        required: true
+      module_major_version:
+        required: false
+        type: string
+      module_minor_version:
+        required: false
+        type: string
 
 jobs:
   version:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo "Hello, World"
+        run: echo "Hello, ${{ env.module_name }}"
