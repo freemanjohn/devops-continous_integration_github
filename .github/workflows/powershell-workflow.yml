@@ -3,13 +3,13 @@ name: reusable_workflow_test
 on:
   workflow_call:
     inputs:
-      module_name:
+      MODULE_NAME:
         required: true
         type: string
-      module_major_version:
+      MODULE_MAJOR_VERSION:
         required: false
         type: string
-      module_minor_version:
+      MODULE_MINOR_VERSION:
         required: false
         type: string
 
