@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo "Hello, ${{ input.MODULE_NAME }}"
+        run: echo "Hello, ${{ inputs.MODULE_NAME }}"
 
       - name: find_latest_package_version
         shell: pwsh
