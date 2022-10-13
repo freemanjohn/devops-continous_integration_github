@@ -29,8 +29,6 @@ process {
     $env:DOTNET_NOLOGO = "true"
     dotnet restore --verbosity quiet
     dotnet pack --no-build --verbosity quiet --nologo --configuration $BuildType
-    ls "bin/$BuildType"
-    $(Get-Location).Path
 }
 end {
 
