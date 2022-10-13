@@ -20,9 +20,6 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: echo "Hello, ${{ inputs.MODULE_NAME }}"
-
       # https://github.com/marketplace/actions/checkout
       - name: check_out_repository
         uses: actions/checkout@v3
