@@ -90,4 +90,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nuget_file
-          path: ${{ github.workspace }}/${{ github.event.repository.name }}/${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
+          path: ${{ github.workspace }}/${{ github.event.repository.name }}/${{ github.event.repository.name }}/bin/${{ inputs.BUILD_TYPE }}${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
