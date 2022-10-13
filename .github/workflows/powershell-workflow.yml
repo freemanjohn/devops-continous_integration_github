@@ -91,3 +91,33 @@ jobs:
         with:
           name: nuget_file
           path: ${{ github.workspace }}/${{ github.event.repository.name }}/bin/${{ inputs.BUILD_TYPE }}/${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
+
+  publish:
+    needs: [version, package]
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/setup-dotnet
+      - name: setup_dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+          dotnet-quality: 'ga'
+      # https://github.com/marketplace/actions/download-a-build-artifact
+      - name: download_artifact_package_version
+        uses: actions/download-artifact@v3
+        with:
+          name: nuget_file
+      # https://github.com/marketplace/actions/download-a-build-artifact
+      - name: download_artifact_package_version
+        uses: actions/download-artifact@v3
+        with:
+          name: package_version
+      - name: set_environment_variable_package_version
+        run: |
+          echo "PACKAGE_VERSION=$(cat package_version.env)" >> $GITHUB_ENV
+          echo $GITHUB_ENV
+      - name: replace_version_in_files
+        shell: pwsh
+        run: |
+          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "github" "https://nuget.pkg.github.com/OWNER/index.json"
+          dotnet nuget push ".\${{ env.BUILD_TYPE }}\${{ env.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg" --api-key ${{ secrets.ACCESS_TOKEN_GITHUB }} --source "github"
