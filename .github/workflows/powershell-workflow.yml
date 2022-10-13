@@ -45,3 +45,49 @@ jobs:
         with:
           name: package_version
           path: package_version.env
+
+  package:
+    needs: [version]
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/setup-dotnet
+      - name: setup_dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+          dotnet-quality: 'ga'
+      # https://github.com/marketplace/actions/checkout
+      - name: check_out_repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/devops-continous_integration_github.git
+          token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+          path: devops-continous_integration_github
+          ref: main
+      # https://github.com/marketplace/actions/checkout
+      - name: check_out_repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/${{ github.event.repository.name }}.git
+          token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+          path: ${{ github.event.repository.name }}
+          ref: main
+      # https://github.com/marketplace/actions/download-a-build-artifact
+      - name: download_artifact_package_version
+        uses: actions/download-artifact@v3
+        with:
+          name: package_version
+      - name: set_environment_variable_package_version
+        run: |
+          echo "PACKAGE_VERSION=$(cat package_version.env)" >> $GITHUB_ENV
+          echo $GITHUB_ENV
+      - name: replace_version_in_files
+        shell: pwsh
+        run: |
+          ./devops-continous_integration_github/powershell/scripts/pack.ps1 -ModuleName ${{ inputs.MODULE_NAME }} -ModuleDirectory ${{ github.workspace }}\${{ github.event.repository.name }} -PackageVersion ${{ env.PACKAGE_VERSION }} -BuildType ${{ inputs.BUILD_TYPE }}
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: upload_artifact_nuget_file
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget_file
+          path: ${{ github.workspace }}\${{ github.event.repository.name }}\${{ github.event.repository.name }}\bin\${{ inputs.BUILD_TYPE }}\${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
