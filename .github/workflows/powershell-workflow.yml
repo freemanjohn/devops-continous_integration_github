@@ -119,5 +119,5 @@ jobs:
       - name: replace_version_in_files
         shell: pwsh
         run: |
-          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "github" "https://nuget.pkg.github.com/OWNER/index.json"
+          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "github" "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           dotnet nuget push "${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg" --api-key ${{ secrets.ACCESS_TOKEN_GITHUB }} --source "github"
