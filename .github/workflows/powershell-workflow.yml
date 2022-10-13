@@ -6,10 +6,10 @@ on:
       MODULE_NAME:
         required: true
         type: string
-      MODULE_MAJOR_VERSION:
+      MAJOR_PACKAGE_VERSION:
         required: false
         type: string
-      MODULE_MINOR_VERSION:
+      MINOR_PACKAGE_VERSION:
         required: false
         type: string
       BUILD_TYPE:
@@ -23,7 +23,28 @@ jobs:
       - name: test
         run: echo "Hello, ${{ inputs.MODULE_NAME }}"
 
+      # https://github.com/marketplace/actions/checkout
+      - name: check_out_repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/devops-continous_integration_github.git
+          token: ${{secrets.access_token_github}}
+          path: devops-continous_integration_github
+          ref: main
+      # https://github.com/marketplace/actions/checkout
+      - name: check_out_repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/${{ github.event.repository.name }}.git
+          token: ${{secrets.access_token_github}}
+          path: ${{ github.event.repository.name }}
+          ref: main
       - name: find_latest_package_version
         shell: pwsh
-        run: ./powershell/scripts/version.ps1 -ModuleName ${{ env.MODULE_NAME }} -MajorPackageVersion ${{ env.MAJOR_PACKAGE_VERSION }} -MinorPackageVersion ${{ env.MINOR_PACKAGE_VERSION }}
+        run: ./devops-continous_integration_github/powershell/scripts/version.ps1 -ModuleName ${{ inputs.MODULE_NAME }} -MajorPackageVersion ${{ inputs.MAJOR_PACKAGE_VERSION }} -MinorPackageVersion ${{ inputs.MINOR_PACKAGE_VERSION }}
       # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: upload_artifact_package_version
+        uses: actions/upload-artifact@v3
+        with:
+          name: package_version
+          path: package_version.env
