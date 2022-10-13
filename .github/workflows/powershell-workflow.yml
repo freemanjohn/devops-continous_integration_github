@@ -12,6 +12,9 @@ on:
       MODULE_MINOR_VERSION:
         required: false
         type: string
+      BUILD_TYPE:
+        required: false
+        type: string
 
 jobs:
   version:
@@ -19,3 +22,9 @@ jobs:
     steps:
       - name: test
         run: echo "Hello, ${{ env.module_name }}"
+
+      - name: find_latest_package_version
+        shell: pwsh
+        run: ./devops-continous_integration/powershell/scripts/version.ps1 -ModuleName ${{ env.MODULE_NAME }} -MajorPackageVersion ${{ env.MAJOR_PACKAGE_VERSION }} -MinorPackageVersion ${{ env.MINOR_PACKAGE_VERSION }}
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: upload_artifact_package_version
