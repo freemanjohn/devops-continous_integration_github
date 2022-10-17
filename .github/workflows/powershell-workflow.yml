@@ -15,7 +15,12 @@ on:
       BUILD_TYPE:
         required: false
         type: string
-
+      PACKAGE_PROJECT:
+        required: true
+        type: boolean
+      PUBLISH_PACKAGE:
+        required: true
+        type: boolean
 jobs:
   version:
     runs-on: ubuntu-latest
