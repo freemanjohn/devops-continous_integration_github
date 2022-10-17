@@ -52,9 +52,9 @@ jobs:
           path: package_version.env
 
   package:
+    if: ${{ inputs.PACKAGE_PROJECT }}
     needs: [version]
     runs-on: ubuntu-latest
-    if: ${{ inputs.PACKAGE_PROJECT }} == true
     steps:
       # https://github.com/actions/setup-dotnet
       - name: setup_dotnet
@@ -99,9 +99,9 @@ jobs:
           path: ${{ github.workspace }}/${{ github.event.repository.name }}/bin/${{ inputs.BUILD_TYPE }}/${{ inputs.MODULE_NAME }}.${{ env.PACKAGE_VERSION }}.nupkg
 
   publish:
+    if: ${{ inputs.PUBLISH_PACKAGE }}
     needs: [version, package]
     runs-on: ubuntu-latest
-    if: ${{ inputs.PUBLISH_PACKAGE }} == true
     steps:
       # https://github.com/actions/setup-dotnet
       - name: setup_dotnet
