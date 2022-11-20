@@ -1,0 +1,19 @@
+name: saltstack-workflow
+
+on:
+  workflow_call:
+
+jobs:
+  update:
+    runs-on: [self-hosted, salt-master]
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: check_out_repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository_owner }}/devops-continous_integration_github.git
+          token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+          path: devops-continous_integration_github
+          ref: main
+      - name: test
+        run: ./devops-continous_integration_github/saltstack/scripts/update.sh
