@@ -17,5 +17,4 @@ jobs:
           ref: main
       - name: test
         run: |
-          ls
           ./devops-continous_integration_github/saltstack/scripts/update.sh
