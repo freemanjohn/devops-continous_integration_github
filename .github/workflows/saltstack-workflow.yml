@@ -19,3 +19,5 @@ jobs:
         run: |
           chmod u+x ./devops-continous_integration_github/saltstack/scripts/update.sh
           ./devops-continous_integration_github/saltstack/scripts/update.sh
+        env:
+          CI_PROJECT_NAME: ${{ github.event.repository.name }}
