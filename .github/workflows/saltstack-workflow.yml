@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
           path: devops-continous_integration_github
           ref: main
-      - name: test
+      - name: update
         run: |
           chmod u+x ./devops-continous_integration_github/saltstack/scripts/update.sh
           ./devops-continous_integration_github/saltstack/scripts/update.sh
