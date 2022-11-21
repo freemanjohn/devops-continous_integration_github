@@ -6,7 +6,7 @@ if [[ "$CI_PROJECT_NAME" =~ "salt_states" ]]; then
     echo "+ Running command [$SALT_STATE_UPDATE]"
     $SALT_STATE_UPDATE
 elif [[ "$CI_PROJECT_NAME" =~ "salt_pillar" ]]; then
-    SALT_PILLAR_UPDATE="salt-run 'git_pillar.update' -l debug"
+    SALT_PILLAR_UPDATE="salt-run git_pillar.update -l debug"
     echo "+ Running command [$SALT_PILLAR_UPDATE]"
     $SALT_PILLAR_UPDATE
 else
