@@ -17,4 +17,5 @@ jobs:
           ref: main
       - name: test
         run: |
+          chmod u+x ./devops-continous_integration_github/saltstack/scripts/update.sh
           ./devops-continous_integration_github/saltstack/scripts/update.sh
