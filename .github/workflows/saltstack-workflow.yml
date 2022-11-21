@@ -16,4 +16,6 @@ jobs:
           path: devops-continous_integration_github
           ref: main
       - name: test
-        run: ./devops-continous_integration_github/saltstack/scripts/update.sh
+        run: |
+          ls
+          ./devops-continous_integration_github/saltstack/scripts/update.sh
